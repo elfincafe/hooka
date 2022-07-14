@@ -17,6 +17,8 @@ type Teams struct {
 
 func NewTeams(url string) *Teams {
 	p := new(teams.Payload)
+	p.Title = ""
+	p.Text = ""
 	p.Type = "MessageCard"
 	p.Context = "http://schema.org/extensions"
 	p.ThemeColor = "7fffd4"
@@ -26,18 +28,6 @@ func NewTeams(url string) *Teams {
 	h.Url = url
 	h.Payload = p
 	return h
-}
-
-func (h *Teams) SetSummary(s string) {
-	h.Payload.Summary = s
-}
-
-func (h *Teams) SetSection(s *teams.Section) {
-	h.Payload.Sections = append(h.Payload.Sections, s)
-}
-
-func (h *Teams) SetColor(color string) {
-	h.Payload.ThemeColor = color
 }
 
 func (h *Teams) Send() error {
@@ -60,11 +50,4 @@ func (h *Teams) Send() error {
 	}
 
 	return nil
-}
-
-func (h *Teams) NewSection(title string) *teams.Section {
-	s := new(teams.Section)
-	s.SetTitle(title)
-	s.Markdown = true
-	return s
 }
