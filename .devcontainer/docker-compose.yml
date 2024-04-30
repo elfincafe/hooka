@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  app:
+    image: webhook:dev
+    container_name: WebhookDev
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    tty: true
+    networks:
+      - webhook
+    volumes:
+      - type: bind
+        source: ..
+        target: /usr/local/webhook/src
+    environment:
+      - TZ=Asia/Tokyo
+      - EDITOR=vi
+networks:
+  webhook:
+volumes:
+  webhook:
