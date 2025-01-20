@@ -1,22 +1,21 @@
 version: "3.9"
 services:
   app:
-    image: webhook:dev
-    container_name: WebhookDev
+    image: localhost/hooka:dev
+    container_name: HookaDev
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
     tty: true
     networks:
-      - webhook
+      - hooka
     volumes:
-      - type: bind
-        source: ..
-        target: /usr/local/webhook/src
+      - ..:/usr/local/hooka/src
     environment:
       - TZ=Asia/Tokyo
       - EDITOR=vi
 networks:
-  webhook:
+  hooka:
 volumes:
-  webhook:
+  hooka:
+
