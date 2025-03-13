@@ -1,4 +1,4 @@
-package teams
+package hooka
 
 import "encoding/json"
 
@@ -7,7 +7,7 @@ type (
 		Schema  string     `json:"$schema"`
 		Type    string     `json:"type"`
 		Version string     `json:"version"`
-		Bodies  []BodyElem `json:"attachments"`
+		Bodies  []BodyElem `json:"body"`
 	}
 	BodyElem interface {
 		GetType() string
@@ -17,7 +17,7 @@ type (
 func NewAdaptiveCard() *AdaptiveCard {
 	ac := new(AdaptiveCard)
 	ac.Schema = "http://adaptivecards.io/schemas/adaptive-card.json"
-	ac.Version = "1.2"
+	ac.Version = "1.0"
 	ac.Bodies = []BodyElem{}
 	return ac
 }

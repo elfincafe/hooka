@@ -49,7 +49,7 @@ func (h *Hooka) Set(elem Element) {
 	h.attachments = append(h.attachments, elem)
 }
 
-func (h *Hooka) Send(p Payload) error {
+func (h *Hooka) Send() error {
 	var err error
 	var payload string
 	switch h.service {
