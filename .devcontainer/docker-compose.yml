@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  app:
+    image: localhost/hooka:dev
+    container_name: HookaDev
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    tty: true
+    networks:
+      - hooka
+    volumes:
+      - ..:/usr/local/hooka/src
+    environment:
+      - TZ=Asia/Tokyo
+      - EDITOR=vi
+networks:
+  hooka:
+volumes:
+  hooka:
+
