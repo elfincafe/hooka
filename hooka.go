@@ -3,6 +3,8 @@ package hooka
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -39,6 +41,8 @@ func New(uri string) *Hooka {
 			h.service = Teams
 		} else if strings.Contains(u.Host, "slack.com") {
 			h.service = Slack
+		} else {
+			h.service = Unknown
 		}
 	}
 	h.url = u
@@ -68,6 +72,10 @@ func (h *Hooka) Send() error {
 	return nil
 }
 
+func (h *Hooka) SendText(data string) error {
+	return h.post(data)
+}
+
 func (h *Hooka) createTeamsPayload() (string, error) {
 	payload, err := json.Marshal(
 		struct {
@@ -86,4 +94,28 @@ func (h *Hooka) createTeamsPayload() (string, error) {
 func (h *Hooka) createSlackPayload() (string, error) {
 	var payload []byte
 	return string(payload), nil
+}
+
+func (h *Hooka) post(data string) error {
+	// Request
+	req, err := http.NewRequest("POST", h.url.String(), strings.NewReader(data))
+	if err != nil {
+		return err
+	}
+	// Header
+	headers := http.Header{}
+	headers.Add("Content-Type", "application/json")
+	req.Header = headers
+	// Send
+	client := http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	if res.StatusCode != 200 && res.StatusCode == 204 {
+		return fmt.Errorf("[%d] %s", res.StatusCode, res.Status)
+	}
+	content, _ := io.ReadAll(res.Body)
+	fmt.Println(string(content))
+	return nil
 }
