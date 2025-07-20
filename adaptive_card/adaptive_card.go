@@ -1,16 +1,16 @@
 package adaptive_card
 
-import "json"
+import "encoding/json"
 
 type (
 	AdaptiveCard struct {
 		Schema   string    `json:"$schema"`
 		Type     string    `json:"type"`
-		Version  string    `json:"version"`
-		Contents []Content `json:"content"`
+		Version  float32   `json:"version"`
+		Contents []Element `json:"content"`
 	}
 	Element interface {
-		GetVersion() string
+		GetVersion() float32
 		GetType() string
 		SetId(string)
 	}
@@ -21,7 +21,7 @@ func NewAdaptiveCard() AdaptiveCard {
 		Schema:   "http://adaptivecards.io/schemas/adaptive-card.json",
 		Type:     "AdaptiveCard",
 		Version:  1.0,
-		Contents: []Content{},
+		Contents: []Element{},
 	}
 	return ac
 }
@@ -40,6 +40,6 @@ func (ac AdaptiveCard) AppendContent(elem Element) {
 	}
 }
 
-func (ac AdaptiveCard)Marshal()([]byte, error){
+func (ac AdaptiveCard) Marshal() ([]byte, error) {
 	return json.Marshal(ac)
 }
