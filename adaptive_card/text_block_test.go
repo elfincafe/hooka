@@ -7,15 +7,14 @@ import (
 )
 
 func TestTextBlockSetSpacing(t *testing.T) {
-	// tb := &TextBlock{Version: "1.0", Text: "test", Type: "TextBlock"}
 	tb := NewTextBlock("test")
-	tb.SetSpacing(SpacingExtraLarge)
+	tb.SetSpacing("ExtraLarge")
 	j, _ := json.Marshal(tb)
 	fmt.Println(string(j))
 }
 
 func TestTextBlockSetSubtle(t *testing.T) {
-	tb := &TextBlock{Version: "1.0", Text: "test", Type: "TextBlock"}
+	tb := NewTextBlock("test")
 	tb.SetSubtle(false)
 	j, _ := json.Marshal(tb)
 	fmt.Println(string(j))
