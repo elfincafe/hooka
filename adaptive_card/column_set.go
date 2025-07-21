@@ -1,12 +1,15 @@
 package adaptive_card
 
+import (
+	"strings"
+)
+
 type (
-	Column struct {
-	}
 	ColumnSet struct {
-		Version             string
+		Version             float32
 		Type                string
-		Columns             Column
+		Id string
+		Columns             []Column
 		Style               string
 		Spacing             string
 		Separator           bool
@@ -14,10 +17,12 @@ type (
 	}
 )
 
-func NewColumnSet() *ColumnSet {
-	cs := &ColumnSet{
-		Version:             "1.0",
+func NewColumnSet() ColumnSet {
+	cs := ColumnSet{
+		Version:             1.0,
 		Type:                "ColumnSet",
+		Id: "",
+		Columns: []Column{},
 		Style:               "",
 		Spacing:             "",
 		Separator:           false,
@@ -26,6 +31,34 @@ func NewColumnSet() *ColumnSet {
 	return cs
 }
 
-func (cs *ColumnSet) SetElement(elem Element) {
+func (cs ColumnSet)GetVersion()float32{
+	return cs.Version
+}
+
+func (cs ColumnSet)GetType()string{
+	return cs.Type
+}
+
+func (cs ColumnSet)SetId(id string){
+	cs.Id = id
+}
+
+func (cs ColumnSet) AppendColumn(column Column) {
+	cs.Columns = append(cs.Columns, column)
+}
+
+func (cs ColumnSet) SetStyle(style string) {
+	style = strings.ToLower(style)
+	switch style {
+	case "default":
+		cs.Style="default"
+	case "emphasis":
+		cs.Style = "emphasis"
+	default:
+		cs.Style = ""
+	}
+}
+
+func (cs ColumnSet)SetSpacing{
 
 }

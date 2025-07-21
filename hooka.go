@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	serviceName = "Hooka"
 	Unknown service = 0
 	Teams   service = 1
 	Slack   service = 2
@@ -53,27 +54,14 @@ func (h *Hooka) Set(elem Element) {
 	h.attachments = append(h.attachments, elem)
 }
 
-func (h *Hooka) Send() error {
-	var err error
-	var payload string
-	switch h.service {
-	case Slack:
-		payload, err = h.createSlackPayload()
-	case Teams:
-		payload, err = h.createTeamsPayload()
-	default:
-		err = fmt.Errorf("invalid service")
-	}
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(string(payload))
-	return nil
+func (h *Hooka) Send(data []byte) error {
+	return h.post(data)
 }
 
-func (h *Hooka) SendText(data string) error {
-	return h.post(data)
+func (h *Hooka)SendAdaptiveCards(ac... adaptive_card.AdaptiveCard)error{
+	if h.service != Teams {
+		return fmt.Errorf("%s is not Teams mode now", serviceName)
+	}
 }
 
 func (h *Hooka) createTeamsPayload() (string, error) {

@@ -6,9 +6,10 @@ import (
 
 type (
 	TextBlock struct {
-		Version             string `json:"-"`
-		Type                string `json:"type"`
-		Text                string `json:"text"`
+		Version float32 `json:"-"`
+		Type    string  `json:"type"`
+		Text    string  `json:"text"`
+		Id      string  `json:"id,omitempty"`
 		Spacing             string `json:"spacing,omitempty"`
 		Separator           bool   `json:"separator,omitempty"`
 		HorizontalAlignment string `json:"horizontalAlignment,omitempty"`
@@ -21,11 +22,12 @@ type (
 	}
 )
 
-func NewTextBlock(text string) *TextBlock {
-	tb := &TextBlock{
-		Version:             "1.0",
+func NewTextBlock(text string) TextBlock {
+	tb := TextBlock{
+		Version:             1.0,
 		Type:                "TextBlock",
 		Text:                text,
+		Id:                  "",
 		Spacing:             "",
 		Separator:           false,
 		HorizontalAlignment: "",
@@ -39,14 +41,19 @@ func NewTextBlock(text string) *TextBlock {
 	return tb
 }
 
-func (tb *TextBlock) GetVersion() string {
+func (tb TextBlock) GetVersion() float32 {
 	return tb.Version
 }
 
-func (tb *TextBlock) GetType() string {
+func (tb TextBlock) GetType() string {
 	return tb.Type
 }
-func (tb *TextBlock) SetSpacing(spacing string) {
+
+func (tb TextBlock) SetId(id string){
+	tb.Id = id
+}
+
+func (tb TextBlock) SetSpacing(spacing string) {
 	spacing = strings.ToLower(spacing)
 	switch spacing {
 	case "none":
@@ -66,11 +73,11 @@ func (tb *TextBlock) SetSpacing(spacing string) {
 	}
 }
 
-func (tb *TextBlock) SetSeparator(separator bool) {
+func (tb TextBlock) SetSeparator(separator bool) {
 	tb.Separator = separator
 }
 
-func (tb *TextBlock) SetHorizontalAlignment(horizontalAlignment string) {
+func (tb TextBlock) SetHorizontalAlignment(horizontalAlignment string) {
 	horizontalAlignment = strings.ToLower(horizontalAlignment)
 	switch horizontalAlignment {
 	case "left":
@@ -84,18 +91,18 @@ func (tb *TextBlock) SetHorizontalAlignment(horizontalAlignment string) {
 	}
 }
 
-func (tb *TextBlock) SetWrap(wrap bool) {
+func (tb TextBlock) SetWrap(wrap bool) {
 	tb.Wrap = wrap
 }
 
-func (tb *TextBlock) SetMaxLines(maxLines int) {
+func (tb TextBlock) SetMaxLines(maxLines int) {
 	if maxLines < 0 {
 		maxLines = 0
 	}
 	tb.MaxLines = maxLines
 }
 
-func (tb *TextBlock) SetSize(size string) {
+func (tb TextBlock) SetSize(size string) {
 	size = strings.ToLower(size)
 	switch size {
 	case "small":
@@ -113,7 +120,7 @@ func (tb *TextBlock) SetSize(size string) {
 	}
 }
 
-func (tb *TextBlock) SetWeight(weight string) {
+func (tb TextBlock) SetWeight(weight string) {
 	weight = strings.ToLower(weight)
 	switch weight {
 	case "lighter":
@@ -127,7 +134,7 @@ func (tb *TextBlock) SetWeight(weight string) {
 	}
 }
 
-func (tb *TextBlock) SetColor(color string) {
+func (tb TextBlock) SetColor(color string) {
 	color = strings.ToLower(color)
 	switch color {
 	case "dark":
@@ -147,6 +154,6 @@ func (tb *TextBlock) SetColor(color string) {
 	}
 }
 
-func (tb *TextBlock) SetSubtle(subtle bool) {
+func (tb TextBlock) SetSubtle(subtle bool) {
 	tb.Subtle = subtle
 }

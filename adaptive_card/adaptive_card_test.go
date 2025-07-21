@@ -1,4 +1,4 @@
-package hooka
+package adaptive_card
 
 import (
 	"reflect"
