@@ -14,7 +14,7 @@ func TestAdaptiveCardNewColumn(t *testing.T) {
 
 func TestAdaptiveCardColumnGetVersion(t *testing.T) {
 	cases := []struct {
-		version float32
+		version float64
 	}{
 		{
 			1.0,
@@ -198,25 +198,24 @@ func TestAdaptiveCardColumnSetStyle(t *testing.T) {
 
 func TestAdaptiveCardColumnSetWidth(t *testing.T) {
 	cases := []struct {
-		width     string
-		expected1 string
-		expected2 int
+		width    string
+		expected string
 	}{
-		{"auto", "auto", 0},
-		{"AUTO", "auto", 0},
-		{"stretch", "stretch", 0},
-		{"STRETCH", "stretch", 0},
-		{"", "", 0},
-		{"TestWidth", "", 0},
-		{"0", "", 0},
-		{"-1", "", 0},
-		{"1", "", 1},
+		{"auto", "auto"},
+		{"AUTO", "auto"},
+		{"stretch", "stretch"},
+		{"STRETCH", "stretch"},
+		{"", ""},
+		{"TestWidth", ""},
+		{"0", "0"},
+		{"-1", "0"},
+		{"1", "1"},
 	}
 	for i, c := range cases {
 		cl := NewColumn()
 		cl.SetWidth(c.width)
-		if cl.Width != c.expected1 || cl.WidthInt != c.expected2 {
-			t.Errorf("[Case%d] Expected: %v, %v, Result: %v, %v", i+1, c.expected1, c.expected2, cl.Width, cl.WidthInt)
+		if cl.width != c.expected {
+			t.Errorf("[Case%d] Expected: %v, Result: %v", i+1, c.expected, cl.width)
 		}
 	}
 }

@@ -22,7 +22,7 @@ func TestAdaptiveCardNewImage(t *testing.T) {
 
 func TestAdaptiveCardImageGetVersion(t *testing.T) {
 	cases := []struct {
-		version float32
+		version float64
 	}{
 		{
 			1.0,

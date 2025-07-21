@@ -1,41 +1,48 @@
 package adaptive_card
 
 import (
+	"encoding/json"
 	"strconv"
 	"strings"
 )
 
 type (
 	Column struct {
-		Version   float32
+		version   float64
 		Type      string    `json:"type"`
 		Id        string    `json:"id,omitempty"`
 		Items     []Element `json:"items"`
 		Separator bool      `json:"separator,omitempty"`
 		Spacing   string    `json:"spacing,omitempty"`
 		Style     string    `json:"style,omitempty"`
-		Width     string    `json:"width,omitempty"`
-		WidthInt  int       `json:"width,omitempty"`
+		width     string
+	}
+	ColumnStr struct {
+		Column
+		Width string `json:"width,omitempty"`
+	}
+	ColumnInt struct {
+		Column
+		Width int `json:"width,omitempty"`
 	}
 )
 
 func NewColumn() *Column {
 	c := &Column{
-		Version:   1.0,
+		version:   1.0,
 		Type:      "Column",
 		Id:        "",
 		Items:     []Element{},
 		Separator: false,
 		Spacing:   "",
 		Style:     "",
-		Width:     "",
-		WidthInt:  0,
+		width:     "",
 	}
 	return c
 }
 
-func (c *Column) GetVersion() float32 {
-	return c.Version
+func (c *Column) GetVersion() float64 {
+	return c.version
 }
 
 func (c *Column) GetType() string {
@@ -94,21 +101,49 @@ func (c *Column) SetWidth(width string) {
 	if err != nil {
 		switch width {
 		case "auto":
-			c.Width = width
-			c.WidthInt = 0
+			c.width = width
 		case "stretch":
-			c.Width = width
-			c.WidthInt = 0
+			c.width = width
 		default:
-			c.Width = ""
-			c.WidthInt = 0
+			c.width = ""
 		}
 	} else {
-		c.Width = ""
 		if widthInt > 0 {
-			c.WidthInt = widthInt
+			c.width = width
 		} else {
-			c.WidthInt = 0
+			c.width = "0"
 		}
 	}
+}
+
+// func (c *Column) SetWidth(width string) {
+// 	width = strings.ToLower(width)
+// 	widthInt, err := strconv.Atoi(width)
+// 	if err != nil {
+// 		switch width {
+// 		case "auto":
+// 			c.Width = width
+// 		case "stretch":
+// 			c.Width = width
+// 		default:
+// 			c.Width = ""
+// 		}
+// 	} else {
+// 		c.Width = widthInt
+// 	}
+// }
+
+func (c *Column) MarshalJSON() ([]byte, error) {
+	var data []byte
+	var err error
+	var widthInt int
+	widthInt, err = strconv.Atoi(c.width)
+	if err != nil {
+		col := ColumnStr{Column: *c, Width: c.width}
+		data, err = json.Marshal(col)
+	} else {
+		col := ColumnInt{Column: *c, Width: widthInt}
+		data, err = json.Marshal(col)
+	}
+	return data, err
 }

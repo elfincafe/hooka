@@ -4,7 +4,7 @@ import "strings"
 
 type (
 	FactSet struct {
-		Version   float32 `json:"-"`
+		version   float64
 		Type      string  `json:"type"`
 		Id        string  `json:"id,omitempty"`
 		Facts     []*Fact `json:"facts,omitempty"`
@@ -15,7 +15,7 @@ type (
 
 func NewFactSet() *FactSet {
 	fs := &FactSet{
-		Version:   1.0,
+		version:   1.0,
 		Type:      "FactSet",
 		Id:        "",
 		Facts:     []*Fact{},
@@ -25,8 +25,8 @@ func NewFactSet() *FactSet {
 	return fs
 }
 
-func (fs *FactSet) GetVersion() float32 {
-	return fs.Version
+func (fs *FactSet) GetVersion() float64 {
+	return fs.version
 }
 
 func (fs *FactSet) GetType() string {

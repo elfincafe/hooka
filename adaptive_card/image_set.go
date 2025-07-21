@@ -4,7 +4,7 @@ import "strings"
 
 type (
 	ImageSet struct {
-		Version             float32  `json:"-"`
+		version             float64
 		Type                string   `json:"type"`
 		Id                  string   `json:"id,omitempty"`
 		Images              []*Image `json:"images"`
@@ -17,7 +17,7 @@ type (
 
 func NewImageSet() *ImageSet {
 	is := &ImageSet{
-		Version:   1.0,
+		version:   1.0,
 		Type:      "ImageSet",
 		Id:        "",
 		Images:    []*Image{},
@@ -28,8 +28,8 @@ func NewImageSet() *ImageSet {
 	return is
 }
 
-func (is *ImageSet) GetVersion() float32 {
-	return is.Version
+func (is *ImageSet) GetVersion() float64 {
+	return is.version
 }
 
 func (is *ImageSet) GetType() string {
@@ -42,6 +42,9 @@ func (is *ImageSet) SetId(id string) {
 
 func (is *ImageSet) Append(image *Image) {
 	is.Images = append(is.Images, image)
+	if image.GetVersion() > is.GetVersion() {
+		is.version = image.GetVersion()
+	}
 }
 
 func (is *ImageSet) SetImageSize(imageSize string) {

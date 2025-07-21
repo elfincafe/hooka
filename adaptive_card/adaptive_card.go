@@ -1,14 +1,20 @@
 package adaptive_card
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type (
 	AdaptiveCard struct {
 		ContentType string              `json:"contentType"`
 		Content     AdaptiveCardContent `json:"content"`
 	}
 	AdaptiveCardContent struct {
+		Ver             string    `json:"version"`
 		Schema          string    `json:"$schema"`
 		Type            string    `json:"type"`
-		Version         float32   `json:"version"`
+		Version         float64   `json:"-"`
 		Bodies          []Element `json:"body"`
 		FallbackText    string    `json:"fallbackText,omitempty"`
 		BackgroundImage string    `json:"backgroundImage,omitempty"`
@@ -16,15 +22,16 @@ type (
 		Lang            string    `json:"lang,omitempty"`
 	}
 	Element interface {
-		GetVersion() float32
+		GetVersion() float64
 		GetType() string
 	}
 )
 
-func NewAdaptiveCard() *AdaptiveCard {
+func New() *AdaptiveCard {
 	ac := &AdaptiveCard{
 		ContentType: "application/vnd.microsoft.card.adaptive",
 		Content: AdaptiveCardContent{
+			Ver:             "1.0",
 			Schema:          "http://adaptivecards.io/schemas/adaptive-card.json",
 			Type:            "AdaptiveCard",
 			Version:         1.0,
@@ -38,7 +45,7 @@ func NewAdaptiveCard() *AdaptiveCard {
 	return ac
 }
 
-func (ac *AdaptiveCard) GetVersion() float32 {
+func (ac *AdaptiveCard) GetVersion() float64 {
 	return ac.Content.Version
 }
 
@@ -55,4 +62,10 @@ func (ac *AdaptiveCard) Append(elem Element) {
 
 func (ac *AdaptiveCard) SetLang(lang string) {
 	ac.Content.Lang = lang
+}
+
+func (ac *AdaptiveCard) Marshal() ([]byte, error) {
+	fmt.Println(fmt.Sprintf("%.2f", ac.Content.Version))
+	ac.Content.Ver = fmt.Sprintf("%.2f", ac.Content.Version)
+	return json.Marshal(ac)
 }

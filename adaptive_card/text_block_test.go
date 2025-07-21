@@ -22,7 +22,7 @@ func TestAdaptiveCardNewTextBlock(t *testing.T) {
 
 func TestAdaptiveCardTextBlockGetVersion(t *testing.T) {
 	cases := []struct {
-		version float32
+		version float64
 	}{
 		{
 			1.0,

@@ -4,22 +4,22 @@ import "strings"
 
 type (
 	Image struct {
-		Version             float32 `json:"-"`
-		Type                string  `json:"type"`
-		Url                 string  `json:"url"`
-		AltText             string  `json:"altText,omitempty"`
-		HorizontalAlignment string  `json:"horizontalAlignment,omitempty"`
-		Size                string  `json:"size,omitempty"`
-		Style               string  `json:"style,omitempty"`
-		Separator           bool    `json:"separator,omitempty"`
-		Spacing             string  `json:"spacing,omitempty"`
-		Id                  string  `json:"id,omitempty"`
+		version             float64
+		Type                string `json:"type"`
+		Url                 string `json:"url"`
+		AltText             string `json:"altText,omitempty"`
+		HorizontalAlignment string `json:"horizontalAlignment,omitempty"`
+		Size                string `json:"size,omitempty"`
+		Style               string `json:"style,omitempty"`
+		Separator           bool   `json:"separator,omitempty"`
+		Spacing             string `json:"spacing,omitempty"`
+		Id                  string `json:"id,omitempty"`
 	}
 )
 
 func NewImage(url string) *Image {
 	i := &Image{
-		Version:             1.0,
+		version:             1.0,
 		Type:                "Image",
 		Url:                 url,
 		AltText:             "",
@@ -33,8 +33,8 @@ func NewImage(url string) *Image {
 	return i
 }
 
-func (i *Image) GetVersion() float32 {
-	return i.Version
+func (i *Image) GetVersion() float64 {
+	return i.version
 }
 
 func (i *Image) GetType() string {

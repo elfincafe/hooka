@@ -1,31 +1,30 @@
 package adaptive_card
 
 import (
-	"fmt"
 	"strings"
 )
 
 type (
 	TextBlock struct {
-		Version             float32 `json:"-"`
-		Type                string  `json:"type"`
-		Text                string  `json:"text"`
-		Color               string  `json:"color,omitempty"`
-		HorizontalAlignment string  `json:"horizontalAlignment,omitempty"`
-		Subtle              bool    `json:"isSubtle,omitempty"`
-		MaxLines            int     `json:"maxLines,omitempty"`
-		Size                string  `json:"size,omitempty"`
-		Weight              string  `json:"weight,omitempty"`
-		Wrap                bool    `json:"wrap,omitempty"`
-		Separator           bool    `json:"separator,omitempty"`
-		Spacing             string  `json:"spacing,omitempty"`
-		Id                  string  `json:"id,omitempty"`
+		version             float64
+		Type                string `json:"type"`
+		Text                string `json:"text"`
+		Color               string `json:"color,omitempty"`
+		HorizontalAlignment string `json:"horizontalAlignment,omitempty"`
+		Subtle              bool   `json:"isSubtle,omitempty"`
+		MaxLines            int    `json:"maxLines,omitempty"`
+		Size                string `json:"size,omitempty"`
+		Weight              string `json:"weight,omitempty"`
+		Wrap                bool   `json:"wrap,omitempty"`
+		Separator           bool   `json:"separator,omitempty"`
+		Spacing             string `json:"spacing,omitempty"`
+		Id                  string `json:"id,omitempty"`
 	}
 )
 
 func NewTextBlock(text string) *TextBlock {
 	tb := &TextBlock{
-		Version:             1.0,
+		version:             1.0,
 		Type:                "TextBlock",
 		Text:                text,
 		Color:               "",
@@ -42,8 +41,8 @@ func NewTextBlock(text string) *TextBlock {
 	return tb
 }
 
-func (tb *TextBlock) GetVersion() float32 {
-	return tb.Version
+func (tb *TextBlock) GetVersion() float64 {
+	return tb.version
 }
 
 func (tb *TextBlock) GetType() string {
@@ -51,9 +50,7 @@ func (tb *TextBlock) GetType() string {
 }
 
 func (tb *TextBlock) SetId(id string) {
-	fmt.Println("SetId:", id)
 	tb.Id = id
-	fmt.Println("SetId2:", tb.Id)
 }
 
 func (tb *TextBlock) SetSpacing(spacing string) {

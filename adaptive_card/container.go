@@ -4,7 +4,7 @@ import "strings"
 
 type (
 	Container struct {
-		Version   float32   `json:"-"`
+		version   float64
 		Type      string    `json:"type"`
 		Id        string    `json:"id,omitempty"`
 		Items     []Element `json:"items"`
@@ -16,7 +16,7 @@ type (
 
 func NewContainer() *Container {
 	c := &Container{
-		Version:   1.0,
+		version:   1.0,
 		Type:      "Container",
 		Id:        "",
 		Items:     []Element{},
@@ -27,8 +27,8 @@ func NewContainer() *Container {
 	return c
 }
 
-func (c *Container) GetVersion() float32 {
-	return c.Version
+func (c *Container) GetVersion() float64 {
+	return c.version
 }
 
 func (c *Container) GetType() string {
@@ -41,6 +41,9 @@ func (c *Container) SetId(id string) {
 
 func (c *Container) Append(item Element) {
 	c.Items = append(c.Items, item)
+	if item.GetVersion() > c.GetVersion() {
+		c.version = item.GetVersion()
+	}
 }
 
 func (c *Container) SetStyle(style string) {

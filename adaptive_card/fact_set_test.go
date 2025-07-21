@@ -11,7 +11,7 @@ func TestAdaptiveCardFactSetNewFactSet(t *testing.T) {
 
 func TestAdaptiveCardFactSetGetVersion(t *testing.T) {
 	cases := []struct {
-		version float32
+		version float64
 	}{
 		{
 			1.0,

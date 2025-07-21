@@ -14,7 +14,7 @@ func TestAdaptiveCardNewContainer(t *testing.T) {
 
 func TestAdaptiveCardContainerGetVersion(t *testing.T) {
 	cases := []struct {
-		version float32
+		version float64
 	}{
 		{
 			1.0,

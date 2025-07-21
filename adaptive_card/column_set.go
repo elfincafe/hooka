@@ -4,19 +4,19 @@ import "strings"
 
 type (
 	ColumnSet struct {
-		Version             float32
+		version             float64
 		Type                string    `json:"type"`
 		Id                  string    `json:"id,omitempty"`
 		Columns             []*Column `json:"columns,omitempty"`
 		HorizontalAlignment string    `json:"horizontalAlignment,omitempty"`
 		Spacing             string    `json:"spacing,omitempty"`
-		Separator           bool      `json:"separator,omitemppty"`
+		Separator           bool      `json:"separator,omitempty"`
 	}
 )
 
 func NewColumnSet() *ColumnSet {
 	cs := &ColumnSet{
-		Version:             1.0,
+		version:             1.0,
 		Type:                "ColumnSet",
 		Id:                  "",
 		Columns:             []*Column{},
@@ -27,8 +27,8 @@ func NewColumnSet() *ColumnSet {
 	return cs
 }
 
-func (cs *ColumnSet) GetVersion() float32 {
-	return cs.Version
+func (cs *ColumnSet) GetVersion() float64 {
+	return cs.version
 }
 
 func (cs *ColumnSet) GetType() string {
@@ -41,6 +41,9 @@ func (cs *ColumnSet) SetId(id string) {
 
 func (cs *ColumnSet) Append(column *Column) {
 	cs.Columns = append(cs.Columns, column)
+	if column.GetVersion() > cs.GetVersion() {
+		cs.version = column.GetVersion()
+	}
 }
 
 func (cs *ColumnSet) SetSpacing(spacing string) {

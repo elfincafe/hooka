@@ -11,7 +11,7 @@ func TestAdaptiveCardNewColumnSet(t *testing.T) {
 
 func TestAdaptiveCardColumnSetGetVersion(t *testing.T) {
 	cases := []struct {
-		version float32
+		version float64
 	}{
 		{
 			1.0,
