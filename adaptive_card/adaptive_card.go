@@ -40,6 +40,6 @@ func (ac AdaptiveCard) AppendContent(elem Element) {
 	}
 }
 
-func (ac AdaptiveCard)Marshal()([]byte, error){
+func (ac AdaptiveCard) Marshal() ([]byte, error) {
 	return json.Marshal(ac)
 }

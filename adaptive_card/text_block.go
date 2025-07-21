@@ -6,19 +6,19 @@ import (
 
 type (
 	TextBlock struct {
-		Version float32 `json:"-"`
-		Type    string  `json:"type"`
-		Text    string  `json:"text"`
-		Id      string  `json:"id,omitempty"`
-		Spacing             string `json:"spacing,omitempty"`
-		Separator           bool   `json:"separator,omitempty"`
-		HorizontalAlignment string `json:"horizontalAlignment,omitempty"`
-		Wrap                bool   `json:"wrap,omitempty"`
-		MaxLines            int    `json:"maxLines,omitempty"`
-		Size                string `json:"size,omitempty"`
-		Weight              string `json:"weight,omitempty"`
-		Color               string `json:"color,omitempty"`
-		Subtle              bool   `json:"isSubtle,omitempty"`
+		Version             float32 `json:"-"`
+		Type                string  `json:"type"`
+		Text                string  `json:"text"`
+		Id                  string  `json:"id,omitempty"`
+		Spacing             string  `json:"spacing,omitempty"`
+		Separator           bool    `json:"separator,omitempty"`
+		HorizontalAlignment string  `json:"horizontalAlignment,omitempty"`
+		Wrap                bool    `json:"wrap,omitempty"`
+		MaxLines            int     `json:"maxLines,omitempty"`
+		Size                string  `json:"size,omitempty"`
+		Weight              string  `json:"weight,omitempty"`
+		Color               string  `json:"color,omitempty"`
+		Subtle              bool    `json:"isSubtle,omitempty"`
 	}
 )
 
@@ -49,7 +49,7 @@ func (tb TextBlock) GetType() string {
 	return tb.Type
 }
 
-func (tb TextBlock) SetId(id string){
+func (tb TextBlock) SetId(id string) {
 	tb.Id = id
 }
 

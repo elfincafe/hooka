@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	serviceName = "Hooka"
-	Unknown service = 0
-	Teams   service = 1
-	Slack   service = 2
+	serviceName         = "Hooka"
+	Unknown     service = 0
+	Teams       service = 1
+	Slack       service = 2
 )
 
 type (
@@ -58,7 +58,7 @@ func (h *Hooka) Send(data []byte) error {
 	return h.post(data)
 }
 
-func (h *Hooka)SendAdaptiveCards(ac... adaptive_card.AdaptiveCard)error{
+func (h *Hooka) SendAdaptiveCards(ac ...adaptive_card.AdaptiveCard) error {
 	if h.service != Teams {
 		return fmt.Errorf("%s is not Teams mode now", serviceName)
 	}

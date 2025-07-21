@@ -21,7 +21,7 @@ func NewImage(url string) Image {
 	i := Image{
 		Version:             1.0,
 		Type:                "Image",
-		Id: "",
+		Id:                  "",
 		Url:                 url,
 		AltText:             "",
 		Spacing:             "",
@@ -33,15 +33,15 @@ func NewImage(url string) Image {
 	return i
 }
 
-func (i Image)GetVersion()float32{
+func (i Image) GetVersion() float32 {
 	return i.Version
 }
 
-func (i Image)GetType()string{
+func (i Image) GetType() string {
 	return i.Type
 }
 
-func (i Image)SetId(id string){
+func (i Image) SetId(id string) {
 	i.Id = id
 }
 

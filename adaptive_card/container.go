@@ -1,18 +1,18 @@
 package adaptive_card
 
-type(
+type (
 	Container struct {
 		Version float32 `json:"-"`
-		Type string `json:"type"`
-		Id string `json:"id,omitempty"`
+		Type    string  `json:"type"`
+		Id      string  `json:"id,omitempty"`
 	}
 )
 
-func NewContainer()Container{
+func NewContainer() Container {
 	c := Container{
 		Version: 1.0,
-		Type: "Container",
-		Id :"",
+		Type:    "Container",
+		Id:      "",
 	}
 	return c
 }

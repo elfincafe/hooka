@@ -8,7 +8,7 @@ type (
 	ColumnSet struct {
 		Version             float32
 		Type                string
-		Id string
+		Id                  string
 		Columns             []Column
 		Style               string
 		Spacing             string
@@ -21,8 +21,8 @@ func NewColumnSet() ColumnSet {
 	cs := ColumnSet{
 		Version:             1.0,
 		Type:                "ColumnSet",
-		Id: "",
-		Columns: []Column{},
+		Id:                  "",
+		Columns:             []Column{},
 		Style:               "",
 		Spacing:             "",
 		Separator:           false,
@@ -31,15 +31,15 @@ func NewColumnSet() ColumnSet {
 	return cs
 }
 
-func (cs ColumnSet)GetVersion()float32{
+func (cs ColumnSet) GetVersion() float32 {
 	return cs.Version
 }
 
-func (cs ColumnSet)GetType()string{
+func (cs ColumnSet) GetType() string {
 	return cs.Type
 }
 
-func (cs ColumnSet)SetId(id string){
+func (cs ColumnSet) SetId(id string) {
 	cs.Id = id
 }
 
@@ -51,7 +51,7 @@ func (cs ColumnSet) SetStyle(style string) {
 	style = strings.ToLower(style)
 	switch style {
 	case "default":
-		cs.Style="default"
+		cs.Style = "default"
 	case "emphasis":
 		cs.Style = "emphasis"
 	default:
@@ -59,6 +59,6 @@ func (cs ColumnSet) SetStyle(style string) {
 	}
 }
 
-func (cs ColumnSet)SetSpacing{
+func (cs ColumnSet) SetSpacing() {
 
 }
