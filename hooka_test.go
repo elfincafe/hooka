@@ -14,7 +14,7 @@ func TestNew(t *testing.T) {
 	// Test
 	for i, c := range cases {
 		h := New(c.url)
-		if h.url != c.url {
+		if h.url.String() != c.url {
 			t.Errorf(`[Case%d] URL Result: %v, Expected: %v`, i, h.url, c.url)
 		}
 	}

@@ -1,8 +1,9 @@
 package hooka
 
 import (
-	"encoding/json"
+	"bytes"
 	"fmt"
+	"hooka/adaptive_card"
 	"io"
 	"net/http"
 	"net/url"
@@ -10,7 +11,7 @@ import (
 )
 
 const (
-	serviceName         = "Hooka"
+	serviceName string  = "Hooka"
 	Unknown     service = 0
 	Teams       service = 1
 	Slack       service = 2
@@ -62,31 +63,12 @@ func (h *Hooka) SendAdaptiveCards(ac ...adaptive_card.AdaptiveCard) error {
 	if h.service != Teams {
 		return fmt.Errorf("%s is not Teams mode now", serviceName)
 	}
+	return nil
 }
 
-func (h *Hooka) createTeamsPayload() (string, error) {
-	payload, err := json.Marshal(
-		struct {
-			Type        string    `json:"type"`
-			Attachments []Element `json:"attachments"`
-		}{
-			"message", h.attachments,
-		},
-	)
-	if err != nil {
-		return "", err
-	}
-	return string(payload), nil
-}
-
-func (h *Hooka) createSlackPayload() (string, error) {
-	var payload []byte
-	return string(payload), nil
-}
-
-func (h *Hooka) post(data string) error {
+func (h *Hooka) post(data []byte) error {
 	// Request
-	req, err := http.NewRequest("POST", h.url.String(), strings.NewReader(data))
+	req, err := http.NewRequest("POST", h.url.String(), bytes.NewReader(data))
 	if err != nil {
 		return err
 	}
