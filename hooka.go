@@ -3,7 +3,6 @@ package hooka
 import (
 	"bytes"
 	"fmt"
-	"hooka/adaptive_card"
 	"io"
 	"net/http"
 	"net/url"
@@ -19,16 +18,14 @@ const (
 
 type (
 	service uint8
-	Payload interface {
-		Marshal() ([]byte, error)
-	}
-	Element interface {
-		Marshal() ([]byte, error)
+	Message struct {
+		typ  int
+		data []byte
 	}
 	Hooka struct {
-		service     service
-		url         *url.URL
-		attachments []Element
+		service service
+		uri     *url.URL
+		message Message
 	}
 )
 
@@ -37,38 +34,23 @@ func New(uri string) *Hooka {
 	u, err := url.Parse(uri)
 	if err != nil {
 		h.service = Unknown
-	} else {
-		// Service Type
-		if strings.Contains(u.Host, "azure.com") {
-			h.service = Teams
-		} else if strings.Contains(u.Host, "slack.com") {
-			h.service = Slack
-		} else {
-			h.service = Unknown
-		}
+		return h
 	}
-	h.url = u
+	// Service Type
+	if strings.Contains(u.Host, "azure.com") {
+		h.service = Teams
+	} else if strings.Contains(u.Host, "slack.com") {
+		h.service = Slack
+	} else {
+		h.service = Unknown
+	}
+	h.uri = u
 	return h
 }
 
-func (h *Hooka) Set(elem Element) {
-	h.attachments = append(h.attachments, elem)
-}
-
 func (h *Hooka) Send(data []byte) error {
-	return h.post(data)
-}
-
-func (h *Hooka) SendAdaptiveCards(ac ...adaptive_card.AdaptiveCard) error {
-	if h.service != Teams {
-		return fmt.Errorf("%s is not Teams mode now", serviceName)
-	}
-	return nil
-}
-
-func (h *Hooka) post(data []byte) error {
 	// Request
-	req, err := http.NewRequest("POST", h.url.String(), bytes.NewReader(data))
+	req, err := http.NewRequest("POST", h.uri.String(), bytes.NewReader(data))
 	if err != nil {
 		return err
 	}
@@ -82,7 +64,8 @@ func (h *Hooka) post(data []byte) error {
 	if err != nil {
 		return err
 	}
-	if res.StatusCode != 200 && res.StatusCode == 204 {
+	fmt.Println(res)
+	if res.StatusCode >= 400 {
 		return fmt.Errorf("[%d] %s", res.StatusCode, res.Status)
 	}
 	content, _ := io.ReadAll(res.Body)
