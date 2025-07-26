@@ -6,8 +6,8 @@ import (
 
 func TestAdaptiveCardNewAdaptiveCard(t *testing.T) {
 	ac := NewAdaptiveCard()
-	if len(ac.Bodies) != 0 {
-		t.Errorf("[Case1] Expected: ColumnSet.[]Column{}, Result: %v", ac.Bodies)
+	if len(ac.Content.Bodies) != 0 {
+		t.Errorf("[Case1] Expected: ColumnSet.[]Column{}, Result: %v", ac.Content.Bodies)
 	}
 }
 
@@ -59,8 +59,8 @@ func TestAdaptiveCardAdaptiveCardAppend(t *testing.T) {
 		for _, content := range c.bodies {
 			ac.Append(content)
 		}
-		if len(ac.Bodies) != len(c.bodies) {
-			t.Errorf("[Case%d] Contents Count Expected: %v, Result: %v", i+1, len(c.bodies), len(ac.Bodies))
+		if len(ac.Content.Bodies) != len(c.bodies) {
+			t.Errorf("[Case%d] Contents Count Expected: %v, Result: %v", i+1, len(c.bodies), len(ac.Content.Bodies))
 		}
 	}
 }
@@ -77,8 +77,8 @@ func TestAdaptiveCardAdaptiveCardSetLang(t *testing.T) {
 	for i, c := range cases {
 		ac := NewAdaptiveCard()
 		ac.SetLang(c.lang)
-		if ac.Lang != c.lang {
-			t.Errorf("[Case%d] Expected: %v, Result: %v", i+1, c.lang, ac.Lang)
+		if ac.Content.Lang != c.lang {
+			t.Errorf("[Case%d] Expected: %v, Result: %v", i+1, c.lang, ac.Content.Lang)
 		}
 	}
 }

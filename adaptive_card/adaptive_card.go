@@ -1,11 +1,11 @@
 package adaptive_card
 
-import (
-	"encoding/json"
-)
-
 type (
 	AdaptiveCard struct {
+		ContentType string              `json:"contentType"`
+		Content     AdaptiveCardContent `json:"content"`
+	}
+	AdaptiveCardContent struct {
 		Schema          string    `json:"$schema"`
 		Type            string    `json:"type"`
 		Version         float32   `json:"version"`
@@ -23,37 +23,36 @@ type (
 
 func NewAdaptiveCard() *AdaptiveCard {
 	ac := &AdaptiveCard{
-		Schema:          "http://adaptivecards.io/schemas/adaptive-card.json",
-		Type:            "AdaptiveCard",
-		Version:         1.0,
-		Bodies:          []Element{},
-		FallbackText:    "",
-		BackgroundImage: "",
-		Speak:           "",
-		Lang:            "",
+		ContentType: "application/vnd.microsoft.card.adaptive",
+		Content: AdaptiveCardContent{
+			Schema:          "http://adaptivecards.io/schemas/adaptive-card.json",
+			Type:            "AdaptiveCard",
+			Version:         1.0,
+			Bodies:          []Element{},
+			FallbackText:    "",
+			BackgroundImage: "",
+			Speak:           "",
+			Lang:            "",
+		},
 	}
 	return ac
 }
 
 func (ac *AdaptiveCard) GetVersion() float32 {
-	return ac.Version
+	return ac.Content.Version
 }
 
 func (ac *AdaptiveCard) GetType() string {
-	return ac.Type
+	return ac.Content.Type
 }
 
 func (ac *AdaptiveCard) Append(elem Element) {
-	ac.Bodies = append(ac.Bodies, elem)
+	ac.Content.Bodies = append(ac.Content.Bodies, elem)
 	if elem.GetVersion() > ac.GetVersion() {
-		ac.Version = elem.GetVersion()
+		ac.Content.Version = elem.GetVersion()
 	}
 }
 
 func (ac *AdaptiveCard) SetLang(lang string) {
-	ac.Lang = lang
-}
-
-func (ac *AdaptiveCard) Marshal() ([]byte, error) {
-	return json.Marshal(ac)
+	ac.Content.Lang = lang
 }
