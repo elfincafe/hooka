@@ -1,6 +1,7 @@
 package adaptive_card
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -9,151 +10,157 @@ type (
 		Version             float32 `json:"-"`
 		Type                string  `json:"type"`
 		Text                string  `json:"text"`
-		Id                  string  `json:"id,omitempty"`
-		Spacing             string  `json:"spacing,omitempty"`
-		Separator           bool    `json:"separator,omitempty"`
+		Color               string  `json:"color,omitempty"`
 		HorizontalAlignment string  `json:"horizontalAlignment,omitempty"`
-		Wrap                bool    `json:"wrap,omitempty"`
+		Subtle              bool    `json:"isSubtle,omitempty"`
 		MaxLines            int     `json:"maxLines,omitempty"`
 		Size                string  `json:"size,omitempty"`
 		Weight              string  `json:"weight,omitempty"`
-		Color               string  `json:"color,omitempty"`
-		Subtle              bool    `json:"isSubtle,omitempty"`
+		Wrap                bool    `json:"wrap,omitempty"`
+		Separator           bool    `json:"separator,omitempty"`
+		Spacing             string  `json:"spacing,omitempty"`
+		Id                  string  `json:"id,omitempty"`
 	}
 )
 
-func NewTextBlock(text string) TextBlock {
-	tb := TextBlock{
+func NewTextBlock(text string) *TextBlock {
+	tb := &TextBlock{
 		Version:             1.0,
 		Type:                "TextBlock",
 		Text:                text,
-		Id:                  "",
-		Spacing:             "",
-		Separator:           false,
+		Color:               "",
 		HorizontalAlignment: "",
-		Wrap:                false,
+		Subtle:              false,
 		MaxLines:            0,
 		Size:                "",
 		Weight:              "",
-		Color:               "",
-		Subtle:              false,
+		Wrap:                false,
+		Separator:           false,
+		Spacing:             "",
+		Id:                  "",
 	}
 	return tb
 }
 
-func (tb TextBlock) GetVersion() float32 {
+func (tb *TextBlock) GetVersion() float32 {
 	return tb.Version
 }
 
-func (tb TextBlock) GetType() string {
+func (tb *TextBlock) GetType() string {
 	return tb.Type
 }
 
-func (tb TextBlock) SetId(id string) {
+func (tb *TextBlock) SetId(id string) {
+	fmt.Println("SetId:", id)
 	tb.Id = id
+	fmt.Println("SetId2:", tb.Id)
 }
 
-func (tb TextBlock) SetSpacing(spacing string) {
+func (tb *TextBlock) SetSpacing(spacing string) {
 	spacing = strings.ToLower(spacing)
 	switch spacing {
+	case "default":
+		tb.Spacing = spacing
 	case "none":
-		tb.Spacing = "None"
+		tb.Spacing = spacing
 	case "small":
-		tb.Spacing = "Small"
+		tb.Spacing = spacing
 	case "medium":
-		tb.Spacing = "Medium"
+		tb.Spacing = spacing
 	case "large":
-		tb.Spacing = "Large"
+		tb.Spacing = spacing
 	case "extralarge":
-		tb.Spacing = "ExtraLarge"
+		tb.Spacing = "extraLarge"
 	case "padding":
-		tb.Spacing = "Padding"
+		tb.Spacing = spacing
 	default:
 		tb.Spacing = ""
 	}
 }
 
-func (tb TextBlock) SetSeparator(separator bool) {
+func (tb *TextBlock) SetSeparator(separator bool) {
 	tb.Separator = separator
 }
 
-func (tb TextBlock) SetHorizontalAlignment(horizontalAlignment string) {
+func (tb *TextBlock) SetHorizontalAlignment(horizontalAlignment string) {
 	horizontalAlignment = strings.ToLower(horizontalAlignment)
 	switch horizontalAlignment {
 	case "left":
-		tb.HorizontalAlignment = "Left"
+		tb.HorizontalAlignment = horizontalAlignment
 	case "center":
-		tb.HorizontalAlignment = "Center"
+		tb.HorizontalAlignment = horizontalAlignment
 	case "right":
-		tb.HorizontalAlignment = "Right"
+		tb.HorizontalAlignment = horizontalAlignment
 	default:
 		tb.HorizontalAlignment = ""
 	}
 }
 
-func (tb TextBlock) SetWrap(wrap bool) {
+func (tb *TextBlock) SetWrap(wrap bool) {
 	tb.Wrap = wrap
 }
 
-func (tb TextBlock) SetMaxLines(maxLines int) {
+func (tb *TextBlock) SetMaxLines(maxLines int) {
 	if maxLines < 0 {
 		maxLines = 0
 	}
 	tb.MaxLines = maxLines
 }
 
-func (tb TextBlock) SetSize(size string) {
+func (tb *TextBlock) SetSize(size string) {
 	size = strings.ToLower(size)
 	switch size {
-	case "small":
-		tb.Size = "Small"
 	case "default":
-		tb.Size = "Default"
+		tb.Size = size
+	case "small":
+		tb.Size = size
 	case "medium":
-		tb.Size = "Medium"
+		tb.Size = size
 	case "large":
-		tb.Size = "Large"
+		tb.Size = size
 	case "extralarge":
-		tb.Size = "ExtraLarge"
+		tb.Size = "extraLarge"
 	default:
 		tb.Size = ""
 	}
 }
 
-func (tb TextBlock) SetWeight(weight string) {
+func (tb *TextBlock) SetWeight(weight string) {
 	weight = strings.ToLower(weight)
 	switch weight {
-	case "lighter":
-		tb.Weight = "Lighter"
 	case "default":
-		tb.Weight = "Default"
+		tb.Weight = weight
+	case "lighter":
+		tb.Weight = weight
 	case "bolder":
-		tb.Weight = "Bolder"
+		tb.Weight = weight
 	default:
 		tb.Weight = ""
 	}
 }
 
-func (tb TextBlock) SetColor(color string) {
+func (tb *TextBlock) SetColor(color string) {
 	color = strings.ToLower(color)
 	switch color {
+	case "default":
+		tb.Color = color
 	case "dark":
-		tb.Color = "Dark"
+		tb.Color = color
 	case "light":
-		tb.Color = "Light"
+		tb.Color = color
 	case "accent":
-		tb.Color = "Accent"
+		tb.Color = color
 	case "good":
-		tb.Color = "Good"
+		tb.Color = color
 	case "warning":
-		tb.Color = "Warning"
+		tb.Color = color
 	case "attention":
-		tb.Color = "Attention"
+		tb.Color = color
 	default:
 		tb.Color = ""
 	}
 }
 
-func (tb TextBlock) SetSubtle(subtle bool) {
+func (tb *TextBlock) SetSubtle(subtle bool) {
 	tb.Subtle = subtle
 }
