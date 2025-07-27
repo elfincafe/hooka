@@ -2,7 +2,7 @@ package hooka
 
 import (
 	"bytes"
-	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -15,16 +15,15 @@ type (
 	}
 )
 
-func New(uri string) (Hooka, error) {
+func parseUri(uri, domain string) (*url.URL, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return nil, err
 	}
-	// Service Type
-	if strings.Contains(u.Host, "azure.com") {
-		return &Teams{uri: u}, nil
+	if !strings.Contains(u.Host, domain) {
+		return nil, fmt.Errorf(`the passed uri doesn't contain "%s"`, domain)
 	}
-	return nil, errors.New("Specified URL isn't supported")
+	return u, nil
 }
 
 func send(data []byte, uri *url.URL) (*http.Response, error) {

@@ -8,14 +8,30 @@ import (
 )
 
 type (
+	teamsMessage struct {
+		Type        string                        `json:"type"`
+		Attachments []*adaptive_card.AdaptiveCard `json:"attachments"`
+	}
 	Teams struct {
 		uri     *url.URL
-		message struct {
-			Type        string                        `json:"message"`
-			Attachments []*adaptive_card.AdaptiveCard `json:"attachments"`
-		}
+		message *teamsMessage
 	}
 )
+
+func NewTeams(uri string) (*Teams, error) {
+	u, err := parseUri(uri, "azure.com")
+	if err != nil {
+		return nil, err
+	}
+	t := &Teams{
+		uri: u,
+		message: &teamsMessage{
+			Type:        "message",
+			Attachments: []*adaptive_card.AdaptiveCard{},
+		},
+	}
+	return t, nil
+}
 
 func (t *Teams) Send(data []byte) error {
 	res, err := send(data, t.uri)
@@ -28,14 +44,10 @@ func (t *Teams) Send(data []byte) error {
 	return nil
 }
 
-func (t *Teams) Marshal() ([]byte, error) {
-	data, err := json.Marshal(t.message)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
+func (t *Teams) MarshalJSON() ([]byte, error) {
+	return json.Marshal(t.message)
 }
 
-func (t *Teams) Attach(adaptiveCard adaptive_card.AdaptiveCard) {
-	t.message.Attachments = append(t.message.Attachments, &adaptiveCard)
+func (t *Teams) Attach(adaptiveCard *adaptive_card.AdaptiveCard) {
+	t.message.Attachments = append(t.message.Attachments, adaptiveCard)
 }
