@@ -5,4 +5,4 @@ go.work
 go.work.sum
 
 main/*
-
+.vscode/*

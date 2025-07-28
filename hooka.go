@@ -1,89 +1,46 @@
 package hooka
 
 import (
-	"encoding/json"
+	"bytes"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 )
 
-const (
-	Unknown service = 0
-	Teams   service = 1
-	Slack   service = 2
-)
-
 type (
 	service uint8
-	Payload interface {
-		Marshal() ([]byte, error)
-	}
-	Element interface {
-		Marshal() ([]byte, error)
-	}
-	Hooka struct {
-		service     service
-		url         *url.URL
-		attachments []Element
+	Hooka   interface {
+		Send([]byte) error
 	}
 )
 
-func New(uri string) *Hooka {
-	h := new(Hooka)
+func parseUri(uri, domain string) (*url.URL, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
-		h.service = Unknown
-	} else {
-		// Service Type
-		if strings.Contains(u.Host, "azure.com") {
-			h.service = Teams
-		} else if strings.Contains(u.Host, "slack.com") {
-			h.service = Slack
-		}
+		return nil, err
 	}
-	h.url = u
-	return h
+	if !strings.Contains(u.Host, domain) {
+		return nil, fmt.Errorf(`the passed uri doesn't contain "%s"`, domain)
+	}
+	return u, nil
 }
 
-func (h *Hooka) Set(elem Element) {
-	h.attachments = append(h.attachments, elem)
-}
-
-func (h *Hooka) Send(p Payload) error {
-	var err error
-	var payload string
-	switch h.service {
-	case Slack:
-		payload, err = h.createSlackPayload()
-	case Teams:
-		payload, err = h.createTeamsPayload()
-	default:
-		err = fmt.Errorf("invalid service")
-	}
+func send(data []byte, uri *url.URL) (*http.Response, error) {
+	// Request
+	req, err := http.NewRequest("POST", uri.String(), bytes.NewReader(data))
 	if err != nil {
-		return err
+		return nil, err
 	}
-
-	fmt.Println(string(payload))
-	return nil
-}
-
-func (h *Hooka) createTeamsPayload() (string, error) {
-	payload, err := json.Marshal(
-		struct {
-			Type        string    `json:"type"`
-			Attachments []Element `json:"attachments"`
-		}{
-			"message", h.attachments,
-		},
-	)
+	// Header
+	headers := http.Header{}
+	headers.Add("Content-Type", "application/json")
+	req.Header = headers
+	// Send
+	client := http.Client{}
+	res, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return string(payload), nil
-}
-
-func (h *Hooka) createSlackPayload() (string, error) {
-	var payload []byte
-	return string(payload), nil
+	return res, nil
 }
